@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vegas Installers – TV Mounting & Smart Home</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .carousel { position: relative; overflow: hidden; max-width: 1200px; margin: 0 auto; border-radius: 14px; }
+    .carousel-track { display: flex; transition: transform 0.5s ease; }
+    .carousel-slide { min-width: 100%; user-select: none; }
+    .carousel-slide img { display:block; width:100%; height:auto; }
+    .carousel-dots { display:flex; justify-content:center; gap:8px; margin-top:10px; }
+    .carousel-dots button { width:10px; height:10px; border-radius:50%; border:0; background:#ccc; padding:0; }
+    .carousel-dots button.active { background:#333; }
+    .carousel-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.4); color:#fff; border:0; width:38px; height:38px; border-radius:50%; cursor:pointer; }
+    .carousel-btn.prev { left:10px; }
+    .carousel-btn.next { right:10px; }
+    @media (hover:none) { .carousel-btn { display:none; } }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1>Las Vegas TV Mounting & Smart Home Installation</h1>
+    <p>Same-day or next-day service • Flat-rate pricing • Local technicians</p>
+    <nav class="cta">
+      <a class="btn" href="tel:7254258324">Call 725-425-8324</a>
+      <a class="btn outline" href="#book">Book Online</a>
+      <a class="btn link" href="gallery.html">Gallery</a>
+    </nav>
+    <p style="margin-top:8px;">Call or text: <strong>725-425-8324 (725-425-TECH)</strong></p>
+  </header>
+
+  <main>
+    <section id="showcase">
+      <div class="carousel" id="heroCarousel" aria-label="Featured installs">
+        <button class="carousel-btn prev" aria-label="Previous slide">&#10094;</button>
+        <div class="carousel-track">
+          <div class="carousel-slide"><img src="images/hero1.jpg" alt="Fireplace tile mount with soundbar"></div>
+          <div class="carousel-slide"><img src="images/hero2.jpg" alt="Outdoor kitchen TV installation"></div>
+          <div class="carousel-slide"><img src="images/hero3.jpg" alt="Dark tile fireplace with Google TV"></div>
+          <div class="carousel-slide"><img src="images/hero4.jpg" alt="Frame TV with gold trim"></div>
+          <div class="carousel-slide"><img src="images/hero5.jpg" alt="Corner mount with soundbar"></div>
+          <div class="carousel-slide"><img src="images/hero6.jpg" alt="Frame TV over stone fireplace"></div>
+        </div>
+        <button class="carousel-btn next" aria-label="Next slide">&#10095;</button>
+      </div>
+      <div class="carousel-dots" id="heroDots" aria-hidden="true"></div>
+    </section>
+
+    <section id="services">
+      <h2>Services</h2>
+      <ul>
+        <li>TV Mounting (hidden cables available)</li>
+        <li>Smart cameras, doorbells, thermostats, lighting</li>
+        <li>Wi‑Fi & Network optimization</li>
+        <li>Soundbars & Surround sound</li>
+      </ul>
+    </section>
+
+    <section id="faq">
+      <h2>FAQ</h2>
+      <details><summary>How much does TV mounting cost?</summary>
+        <p>Standard flat-panel TV mounting starts at $XXX. Final price depends on TV size, wall type, and cable concealment.</p>
+      </details>
+      <details><summary>Can you hide my cables?</summary>
+        <p>Yes—either in-wall concealment or paintable surface raceways.</p>
+      </details>
+      <details><summary>Do I need to buy my own mount?</summary>
+        <p>Use yours or we can provide fixed, tilt, or full-motion mounts.</p>
+      </details>
+      <details><summary>How soon can you install?</summary>
+        <p>Often same-day or next-day. Call or text to check at 725-425-8324.</p>
+      </details>
+      <p><strong>Not a Nevada State licensed contractor.</strong></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="y"></span> Vegas Installers</p>
+    <p><strong>Not a Nevada State licensed contractor.</strong></p>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    (function(){
+      const carousel = document.getElementById('heroCarousel');
+      const track = carousel.querySelector('.carousel-track');
+      const slides = Array.from(track.children);
+      const prevBtn = carousel.querySelector('.prev');
+      const nextBtn = carousel.querySelector('.next');
+      const dotsNav = document.getElementById('heroDots');
+
+      let index = 0;
+      let startX = 0;
+      let currentX = 0;
+      let isDragging = false;
+      const slideCount = slides.length;
+      const autoMs = 4500;
+      let timer;
+
+      slides.forEach((_, i) => {
+        const b = document.createElement('button');
+        b.setAttribute('aria-label', 'Go to slide ' + (i+1));
+        if(i===0) b.classList.add('active');
+        b.addEventListener('click', () => goTo(i));
+        dotsNav.appendChild(b);
+      });
+
+      function update() {
+        const offset = -index * 100;
+        track.style.transform = 'translateX(' + offset + '%)';
+        dotsNav.querySelectorAll('button').forEach((d, i) => {
+          d.classList.toggle('active', i === index);
+        });
+      }
+
+      function goTo(i) {
+        index = (i + slideCount) % slideCount;
+        update();
+        restart();
+      }
+
+      function next(){ goTo(index+1); }
+      function prev(){ goTo(index-1); }
+
+      prevBtn.addEventListener('click', prev);
+      nextBtn.addEventListener('click', next);
+
+      track.addEventListener('touchstart', (e)=>{
+        isDragging = true; startX = e.touches[0].clientX; currentX = startX; stop();
+      }, {passive:true});
+
+      track.addEventListener('touchmove', (e)=>{
+        if(!isDragging) return;
+        currentX = e.touches[0].clientX;
+      }, {passive:true});
+
+      track.addEventListener('touchend', ()=>{
+        if(!isDragging) return;
+        const dx = currentX - startX;
+        if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
+        isDragging = false; restart();
+      });
+
+      function start(){ timer = setInterval(next, autoMs); }
+      function stop(){ clearInterval(timer); }
+      function restart(){ stop(); start(); }
+
+      start();
+      window.addEventListener('visibilitychange', ()=>{
+        if (document.hidden) stop(); else start();
+      });
+      window.addEventListener('resize', update);
+    })();
+  </script>
+</body>
+</html>

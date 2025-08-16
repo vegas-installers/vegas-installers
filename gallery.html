@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vegas Installers – Gallery</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .gallery-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; max-width:1200px; margin:0 auto; }
+    .gallery-grid img { width:100%; height:auto; border-radius:10px; }
+  </style>
+</head>
+<body>
+  <header class="hero small">
+    <h1>Our Work Gallery</h1>
+    <nav class="cta">
+      <a class="btn link" href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main class="gallery">
+    <section>
+      <div class="gallery-grid">
+        <img src="images/gallery1.jpg" alt="Install 1" loading="lazy">
+        <img src="images/gallery2.jpg" alt="Install 2" loading="lazy">
+        <img src="images/gallery3.jpg" alt="Install 3" loading="lazy">
+        <img src="images/gallery4.jpg" alt="Install 4" loading="lazy">
+        <img src="images/gallery5.jpg" alt="Install 5" loading="lazy">
+        <img src="images/gallery6.jpg" alt="Install 6" loading="lazy">
+        <img src="images/gallery7.jpg" alt="Install 7" loading="lazy">
+        <img src="images/gallery8.jpg" alt="Install 8" loading="lazy">
+        <img src="images/gallery9.jpg" alt="Install 9" loading="lazy">
+        <img src="images/gallery10.jpg" alt="Install 10" loading="lazy">
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="y"></span> Vegas Installers</p>
+    <p><strong>Not a Nevada State licensed contractor.</strong></p>
+  </footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>
